@@ -1,29 +1,23 @@
 <template>
   <div class="container">
-    <div>
-      <Logo />
-      <h1 class="title">
-        fishingclub
-      </h1>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
-    </div>
+    <header id="header">
+      <input>
+    </header>
+    <main id="main">
+      <h2>MAIN BLOCK</h2>
+      <p>どういうこと〜</p>
+    </main>
+
+    <aside id="sub">
+      <div id="logo">LOGO</div>
+      <ul>
+        <li>釣り部とは</li>
+        <li>使い方</li>
+        <li>入部する</li>
+        <li>ログイン</li>
+        <li>かんたんログイン（twitterアイコン）</li>
+      </ul>
+    </aside>
   </div>
 </template>
 
@@ -32,42 +26,30 @@ export default {}
 </script>
 
 <style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family:
-    'Quicksand',
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
+  /* body {
+    margin: 0;
+    padding: 0;
+  } */
+  #header {
+    float: right;
+  }
+  #main {
+    box-sizing: border-box;
+    margin-left: 220px;
+    padding: 80px 40px;
+    float: left;
+  }
+  #sub {
+    box-sizing: border-box;
+    height: 100%;
+    width: 220px;
+    position: fixed;
+    overflow: auto;
+    background: #eee;
+    padding: 20px;
+    float: left;
+  }
+  #logo {
+    margin: o auto;
+  }
 </style>
