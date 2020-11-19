@@ -1,10 +1,48 @@
 <template>
   <div>
+    <header id="header"><input type="text"></header>
     <Nuxt />
+    <div id="sidebar">
+      <aside id="sub">
+        <div id="logo">LOGO</div>
+        <ul>
+          <li>釣り部とは</li>
+          <li><nuxt-link to="/home/howtouse">使い方</nuxt-link></li>
+          <li><nuxt-link to="/home/signup">入部する</nuxt-link></li>
+          <li><nuxt-link to="/home/signin">ログイン</nuxt-link></li>
+          <li><nuxt-link to="/home/twitter-signin">かんたんログイン（twitterアイコン）</nuxt-link></li>
+        </ul>
+      </aside>
+    </div>
+    <footer id="footer"><p>(C)copy right</p></footer>
   </div>
 </template>
 
 <style>
+header {
+  float: right;
+  /* 上部に隙間が欲しい */
+}
+#sidebar {
+    box-sizing: border-box;
+    height: 100%;
+    width: 220px;
+    position: fixed;
+    overflow: auto;
+    background: #eee;
+    padding: 20px;
+    float: left;
+}
+footer{
+  /*footerの装飾*/
+  width: 100%;
+  background-color: #2e2f36;
+  color: #fff;
+  text-align: center;
+  padding: 30px 0;
+  position: absolute;
+  bottom: 0;
+}
 html {
   font-family:
     'Source Sans Pro',
