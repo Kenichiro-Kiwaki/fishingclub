@@ -2,8 +2,8 @@
   <div>
     <header id="header"><input type="text"></header>
     <Nuxt />
-    <!-- <HomeSidebar /> -->
-    <footer id="footer"><p>(C)copy right</p></footer>
+    <HomeSidebar />
+    <HomeFooter />
   </div>
 </template>
 

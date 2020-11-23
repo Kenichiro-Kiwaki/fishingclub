@@ -13,7 +13,8 @@
     "core-js": "^3.6.5",
     "firebase": "^8.0.2",
     "nuxt": "^2.14.6",
-    "save": "^2.4.0"
+    "save": "^2.4.0",
+    "vue2-google-maps": "^0.10.7"
   },
   "devDependencies": {}
 }
