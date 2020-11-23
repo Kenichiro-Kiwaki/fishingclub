@@ -8,7 +8,7 @@
 </template>
 <script>
 export default {
-    layout: 'Home'
+  layout: 'Home'
 }
 </script>
 <style scoped>
