@@ -5,6 +5,7 @@
         :zoom="7"
         map-type-id="terrain"
         style="width: 500px; height: 300px"
+        @rightclick="place($event)"
         >
         <GmapMarker
             :key="index"
@@ -21,7 +22,15 @@
 
 <script>
 export default {
-    
+    methods:{
+        place(event){
+            if(event) {
+                let lat = event.latLng.lat()
+                let lng = event.latLng.lng()
+                console.log(lat + ", " + lng)
+            }
+        },
+    },
 }
 </script>
 <style scoped>

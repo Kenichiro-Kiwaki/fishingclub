@@ -3,10 +3,10 @@ import * as VueGoogleMaps from 'vue2-google-maps'
  
 Vue.use(VueGoogleMaps, {
   load: {
-    key: 'AIzaSyD5kfD6dg5ZXbPVNNWgKS7YXlUBmFAoXGI',
+    key: '',
     libraries: 'places', 
   },
- 
+  autobindAllEvents: false,
   //// If you intend to programmatically custom event listener code
   //// (e.g. `this.$refs.gmap.$on('zoom_changed', someFunc)`)
   //// instead of going through Vue templates (e.g. `<GmapMap @zoom_changed="someFunc">`)
