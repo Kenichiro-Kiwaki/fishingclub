@@ -2,7 +2,8 @@
   <div class="container">
     <main id="main">
       <h2>MAIN BLOCK</h2>
-      <p>トップページです</p>
+      <p>ユーザーページです</p>
+      <p><nuxt-link to="/">Homeへ</nuxt-link></p>
       <GmapMap
         :center="center"
         :zoom="13"
@@ -36,7 +37,7 @@
 
 <script>
 export default {
-  layout: "Home",
+  layout: "Users",
   data() {
     return {
       markers: [

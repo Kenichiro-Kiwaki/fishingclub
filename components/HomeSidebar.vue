@@ -8,6 +8,7 @@
                 <li><nuxt-link to="/home/signup">入部する</nuxt-link></li>
                 <li><nuxt-link to="/home/signin">ログイン</nuxt-link></li>
                 <li><nuxt-link to="/home/twitter-signin">かんたんログイン（twitterアイコン）</nuxt-link></li>
+                <li><nuxt-link to="/users/loginUser">ユーザーページ</nuxt-link></li>
             </ul>
         </aside>
     </div>

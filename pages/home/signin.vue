@@ -2,13 +2,21 @@
     <div class="container">
         <main id="main">
             <h2>MAIN BLOCK</h2>
-            <p>ログイン</p>
+            <button @click="login">ログイン</button>  
         </main>
     </div>
 </template>
 <script>
+import Cookies from 'universal-cookie'
 export default {
-    layout: 'Home'
+    layout: 'Home',
+    methods: {
+        login () {
+            const cookies = new Cookies()
+            cookies.set('credential', 'true', { maxage: 90 })
+            this.$router.push('/')
+        }
+    }
 }
 </script>
 <style scoped>
