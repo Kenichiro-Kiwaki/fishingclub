@@ -29,6 +29,14 @@
           :draggable="true"
           @click="toggleInfoWindow(m)"
         />
+        <GmapMarker
+          :key="key"
+          v-for="(m, key) in currentPositionMarker"
+          :position="m"
+          :clickable="true"
+          :draggable="true"
+          @click="toggleInfoWindow(m)"
+        />
       </GmapMap>
     </main>
   </div>
@@ -43,7 +51,7 @@ export default {
         { position: { lat: 35.6811884, lng: 139.7671906 } },
         { position: { lat: 35.60145749975808, lng: 139.6359324124926} }
       ],
-      currentPositionMarker: [],
+      currentPositionMarker: [ {lat: 35.58666933666384, lng: 139.60277402309572}],
       center: {lat: 35.6811884, lng: 139.7671906},
       infoWindowOptions: {
         pixelOffset: {
@@ -99,7 +107,9 @@ export default {
     },
     //クリック地点にカーソル表示
     setMarker(event) {
-      this.markers = [{position: {lat: event.latLng.lat(), lng: event.latLng.lng()} }]
+      let currentLat = event.latLng.lat()
+      let currentLng = event.latLng.lng()
+      this.currentPositionMarker.push({lat: currentLat, lng: currentLng})
     },
     //マーカークリックでinfoWindow表示
     toggleInfoWindow() {
