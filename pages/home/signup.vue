@@ -7,6 +7,7 @@
             メール:<input type="email"><br>
             パスワード:<input type="text"><br>
             <button @click="hoge">登録する</button>
+            <font-awesome-icon icon="user" />
         </main>
     </div>
 </template>
@@ -22,5 +23,12 @@ export default {
 }
 </script>
 <style scoped>
-
+.container {
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
 </style>

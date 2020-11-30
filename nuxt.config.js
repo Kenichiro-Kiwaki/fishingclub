@@ -17,7 +17,10 @@ export default {
   ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: [{ src: "~/plugins/vue2-google-maps", ssr: false }],
+  plugins: [
+    { src: "~/plugins/vue2-google-maps", ssr: false },
+    '~/plugins/firebase'
+  ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
@@ -30,6 +33,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/bootstrap
     '@nuxtjs/bulma',
+    'nuxt-fontawesome'
   ],
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
@@ -44,8 +48,16 @@ export default {
     },
   },
   router: {
-    middleware: [
-      'auth'
-    ]
+    // middleware: [
+    //   'auth'
+    // ]
   },
+  fontawesome: {
+    imports: [
+      {
+        set: '@fortawesome/free-solid-svg-icons',
+        icons: ['fas']
+      }
+    ]
+  }
 }

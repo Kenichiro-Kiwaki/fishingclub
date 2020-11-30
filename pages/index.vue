@@ -8,6 +8,51 @@
         :zoom="13"
         :options="{
           streetViewControl: false,
+          styles: [
+            {
+              featureType: 'administrative.land_parcel',
+              stylers: [
+                {
+                  visibility: 'off'
+                }
+              ]
+            },
+            {
+              featureType: 'administrative.neighborhood',
+              stylers: [
+                {
+                  visibility: 'off'
+                }
+              ]
+            },
+            {
+              featureType: 'poi',
+              elementType: 'labels.text',
+              stylers: [
+                {
+                  visibility: 'off'
+                }
+              ]
+            },
+            {
+              featureType: 'road',
+              elementType: 'labels',
+              stylers: [
+                {
+                  visibility: 'off'
+                }
+              ]
+            },
+            {
+              featureType: 'water',
+              elementType: 'labels.text',
+              stylers: [
+                {
+                  visibility: 'off'
+                }
+              ]
+            }
+          ]
         }"
         map-type-id="terrain"
         style="width: 900px; height: 500px"
@@ -30,11 +75,12 @@
           @click="toggleInfoWindow(m)"
         />
         <GmapMarker
-          :key="key"
-          v-for="(m, key) in currentPositionMarker"
+          :key="m.lat"
+          v-for="m in currentPositionMarker"
           :position="m"
           :clickable="true"
           :draggable="true"
+          :icon = "markerOptions"
           @click="toggleInfoWindow(m)"
         />
       </GmapMap>
@@ -51,8 +97,20 @@ export default {
         { position: { lat: 35.6811884, lng: 139.7671906 } },
         { position: { lat: 35.60145749975808, lng: 139.6359324124926} }
       ],
-      currentPositionMarker: [ {lat: 35.58666933666384, lng: 139.60277402309572}],
+      currentPositionMarker: [],
       center: {lat: 35.6811884, lng: 139.7671906},
+      markerOptions: {
+        // url: require('@/assets/image/icon/pin_black.png'),
+        // size: {width: 44, height: 70, f: 'px', b: 'px'},
+        // scaledSize: {width: 22, height: 35, f: 'px', b: 'px'}
+        
+        // fillColor: '#99CCFF',                
+        // fillOpacity: 0.6,                    
+        // // path: google.maps.SymbolPath.CIRCLE, 
+        // scale: 16,                           
+        // strokeColor: '#000000',             
+        // strokeWeight: 1.0                    
+      },
       infoWindowOptions: {
         pixelOffset: {
           width: 0,
@@ -109,6 +167,7 @@ export default {
     setMarker(event) {
       let currentLat = event.latLng.lat()
       let currentLng = event.latLng.lng()
+      this.currentPositionMarker = []
       this.currentPositionMarker.push({lat: currentLat, lng: currentLng})
     },
     //マーカークリックでinfoWindow表示

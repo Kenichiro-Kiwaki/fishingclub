@@ -1,4 +1,6 @@
-import firebase from 'firebase'
+import { firebase } from '@firebase/app'
+import '@firebase/auth'
+import '@firebase/firestore'
 
 if (!firebase.apps.length) {
   firebase.initializeApp(
@@ -15,4 +17,8 @@ if (!firebase.apps.length) {
   )
 }
 
-export default firebase
+const firestoreDb = firebase.firestore()
+const dbSettings = { timestampsInSnapshots: true }
+firestoreDb.settings(dbSettings)
+
+export { firestoreDb }
