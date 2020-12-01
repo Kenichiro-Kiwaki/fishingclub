@@ -6,6 +6,11 @@
       <GmapMap
         :center="center"
         :zoom="13"
+        @zoom_changed="changeMarkerSize"
+        @rightclick="place($event)"
+        @click="setMarker($event)"
+        map-type-id="terrain"
+        style="width: 900px; height: 500px"
         :options="{
           streetViewControl: false,
           styles: [
@@ -54,14 +59,12 @@
             }
           ]
         }"
-        map-type-id="terrain"
-        style="width: 900px; height: 500px"
-        @rightclick="place($event)"
-        @click="setMarker($event)"
       >
         <GmapInfoWindow 
-          :position="infoWindowPos"
-          :opened="infoWindowOpen" 
+          :key="m.position.lat"
+          v-for="m in markers" 
+          :position="m.position"
+          :opened="infoWindowOpen"
           :options="infoWindowOptions"
           @closeclick="infoWindowOpen === false"
         >hello world!
@@ -71,16 +74,16 @@
           v-for="(m, index) in markers"
           :position="m.position"
           :clickable="true"
-          :draggable="true"
+          :icon = "markerOptions"
           @click="toggleInfoWindow(m)"
         />
         <GmapMarker
           :key="m.lat"
           v-for="m in currentPositionMarker"
+          animation: google.maps.Animation.DROP
           :position="m"
           :clickable="true"
           :draggable="true"
-          :icon = "markerOptions"
           @click="toggleInfoWindow(m)"
         />
       </GmapMap>
@@ -89,8 +92,12 @@
 </template>
 
 <script>
+import {gmapApi} from 'vue2-google-maps'
 export default {
   layout: "Home",
+  computed: {
+    google: gmapApi
+  },
   data() {
     return {
       markers: [
@@ -100,16 +107,9 @@ export default {
       currentPositionMarker: [],
       center: {lat: 35.6811884, lng: 139.7671906},
       markerOptions: {
-        // url: require('@/assets/image/icon/pin_black.png'),
-        // size: {width: 44, height: 70, f: 'px', b: 'px'},
-        // scaledSize: {width: 22, height: 35, f: 'px', b: 'px'}
-        
-        // fillColor: '#99CCFF',                
-        // fillOpacity: 0.6,                    
-        // // path: google.maps.SymbolPath.CIRCLE, 
-        // scale: 16,                           
-        // strokeColor: '#000000',             
-        // strokeWeight: 1.0                    
+        url: require('@/assets/icon/fish_man.png'),
+        size: {width: 60, height: 60, f: 'px', b: 'px'},
+        scaledSize: {width: 40, height: 50, f: 'px', b: 'px'}
       },
       infoWindowOptions: {
         pixelOffset: {
@@ -117,15 +117,11 @@ export default {
           height: -35
         }
       },
-      infoWindowPos: null,
       infoWindowOpen: false
-      // clickedLat: , 
-      // clickedLng: ,
     };
   },
   mounted() {
     //現在地の取得
-    //現在地だけマーカー変えたい
     // if(process.client) {}    
     if (!navigator.geolocation) {
       alert('現在地を取得できませんでした。お使いのブラウザでは現在地情報を利用できない可能性があります。')
@@ -172,10 +168,16 @@ export default {
     },
     //マーカークリックでinfoWindow表示
     toggleInfoWindow() {
+      console.log(this.infoWindowOpen)
       this.infoWindowPos = this.markers.position
       this.infoWindowOpen = true
       console.log(this.infoWindowOpen)
-      console.log('hoge')
+    },
+    //マーカーサイズを動的に変更
+    changeMarkerSize() {
+      console.log('change!')
+      console.log(this.google)
+      console.log(this.google.maps)
     }
   }
 };
