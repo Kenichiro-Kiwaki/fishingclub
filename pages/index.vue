@@ -200,7 +200,7 @@ export default {
     //infoWindowのコンテンツ取得
     getInfoWindowContent(marker) {
       return (
-      `<div class="card">helloworld
+      `<div class="card">
         <div class="card-image">
           <figure class="image is-4by3">
             <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">

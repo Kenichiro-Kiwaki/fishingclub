@@ -59,5 +59,8 @@ export default {
         icons: ['fas']
       }
     ]
+  },
+  generate: {
+    dir: 'public'
   }
 }
