@@ -60,15 +60,6 @@
           ]
         }"
       >
-        <GmapInfoWindow 
-          :key="m.position.lat"
-          v-for="m in markers" 
-          :position="m.position"
-          :opened="infoWindowOpen"
-          :options="infoWindowOptions"
-          @closeclick="infoWindowOpen === false"
-        >hello world!
-        </GmapInfoWindow>
         <GmapMarker
           :key="index"
           v-for="(m, index) in markers"
@@ -80,12 +71,18 @@
         <GmapMarker
           :key="m.lat"
           v-for="m in currentPositionMarker"
-          animation: google.maps.Animation.DROP
+          :animation="2"
           :position="m"
           :clickable="true"
           :draggable="true"
-          @click="toggleInfoWindow(m)"
         />
+        <GmapInfoWindow 
+          :position="infoWindowPos"
+          :opened="infoWindowOpen"
+          :options="infoWindowOptions"
+          @closeclick="closeInfoWindow"
+        ><div v-html="infoContent"></div>
+        </GmapInfoWindow>
       </GmapMap>
     </main>
   </div>
@@ -101,8 +98,18 @@ export default {
   data() {
     return {
       markers: [
-        { position: { lat: 35.6811884, lng: 139.7671906 } },
-        { position: { lat: 35.60145749975808, lng: 139.6359324124926} }
+        { 
+          name: "タマゾン川中流域1",
+          description: "詳細１",
+          data_build:"",
+          position: { lat: 35.587626238262736, lng: 139.6634936505371 }
+        },
+        { 
+          name: "タマゾン川中流域２",
+          description: "詳細２",
+          data_build: "",
+          position: { lat: 35.613953826411546, lng: 139.61255532158202 }
+        }
       ],
       currentPositionMarker: [],
       center: {lat: 35.6811884, lng: 139.7671906},
@@ -111,13 +118,16 @@ export default {
         size: {width: 60, height: 60, f: 'px', b: 'px'},
         scaledSize: {width: 40, height: 50, f: 'px', b: 'px'}
       },
+      infoWindowPos: {lat: 0, lng:0},
+      infoWindowOpen: false,
+      // currentMidx: null,
       infoWindowOptions: {
         pixelOffset: {
           width: 0,
           height: -35
         }
       },
-      infoWindowOpen: false
+      infoContent: '',
     };
   },
   mounted() {
@@ -131,7 +141,6 @@ export default {
         let currentLat = pos.coords.latitude
         let currentLng = pos.coords.longitude
         this.center = {lat: currentLat, lng: currentLng}
-        this.markers.push({ position: { lat: currentLat, lng: currentLng}})
       }, (error) =>  {
         switch (error.code) {
           case 1: //PERMISSION_DENIED
@@ -148,7 +157,14 @@ export default {
             break
         }
       })  
-    }    
+    }
+    // this.$refs.gmap.$mapPromise.then((map) => {
+    //   const bounds = new google.maps.LatLngBounds()
+    //   for(let m of this.markers) {
+    //     bounds.extend(m.position)
+    //   }
+    //   map.fitBounds(bounds);
+    // });
   },
   methods: {
     //右クリックで座標取得
@@ -166,18 +182,49 @@ export default {
       this.currentPositionMarker = []
       this.currentPositionMarker.push({lat: currentLat, lng: currentLng})
     },
+    closeInfoWindow() {
+      this.infoWindowOpen = false
+    },
     //マーカークリックでinfoWindow表示
-    toggleInfoWindow() {
-      console.log(this.infoWindowOpen)
-      this.infoWindowPos = this.markers.position
-      this.infoWindowOpen = true
-      console.log(this.infoWindowOpen)
+    toggleInfoWindow(marker) {
+      this.infoWindowPos = marker.position
+      this.infoContent = this.getInfoWindowContent(marker)
+
+      // if(this.currentMidx === index) {
+      //   this.infoWindowOpen = !this.infoWindowOpen
+      // } else {
+        this.infoWindowOpen = true
+        // this.currentMidx = index
+      // }
+    },
+    //infoWindowのコンテンツ取得
+    getInfoWindowContent(marker) {
+      return (
+      `<div class="card">helloworld
+        <div class="card-image">
+          <figure class="image is-4by3">
+            <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+          </figure>
+        </div>
+        <div class="card-content">
+          <div class="media">
+            <div class="media-content">
+              <p class="title is-4">${marker.name}</p>
+            </div>
+          </div>
+          <div class="content">
+            ${marker.description}
+            <br>
+            <time datetime="2020-11-30">${marker.data_build}</time>
+          </div>
+        </div>`
+      )
     },
     //マーカーサイズを動的に変更
     changeMarkerSize() {
-      console.log('change!')
-      console.log(this.google)
-      console.log(this.google.maps)
+      // console.log('change!')
+      // console.log(this.google)
+      // console.log(this.google.maps)
     }
   }
 };
@@ -195,3 +242,4 @@ export default {
   float: left;
 }
 </style>
+
