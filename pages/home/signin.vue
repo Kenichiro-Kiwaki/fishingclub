@@ -7,17 +7,12 @@
     </div>
 </template>
 <script>
-// import Cookies from 'universal-cookie'
+//zxcvbnもいれたい
 export default {
     layout: 'Home',
+    methods: {
+    }
 }
-//     methods: {
-//         login () {
-//             const cookies = new Cookies()
-//             cookies.set('credential', 'true', { maxage: 90 })
-//             this.$router.push('/')
-//         }
-//     }
 </script>
 <style scoped>
 

@@ -1,34 +1,54 @@
 <template>
     <div class="container">
         <main id="main">
-            <h2>MAIN BLOCK</h2>
-            <p>新規登録</p>
-            ユーザー名:<input type="text"><br>
-            メール:<input type="email"><br>
-            パスワード:<input type="text"><br>
-            <button @click="hoge">登録する</button>
-            <font-awesome-icon icon="user" />
+            <form class="form" @submit.prevent>
+                <label class="label">
+                    <div class="label">
+                        新規登録
+                        <font-awesome-icon icon="user" />
+                    </div>
+                </label>
+                <label class="form">                    
+                    <span class="label">ユーザー名</span>
+                    <input type="text" v-model="userName">
+                </label>
+                <label class="form">
+                    <span class="label">メールアドレス</span>
+                    <input type="email" v-model="email">
+                </label>
+                <label class="form">
+                    <span class="label">パスワード</span>
+                    <input type="password" v-model="password"><br>
+                    <button @click="signUp">登録する</button>
+                </label>
+            </form>
         </main>
     </div>
 </template>
 <script>
+//zxcvbnもいれたい
 export default {
-    methods: {
-        hoge() {
-            console.log('ほげ')
+    layout: 'Home',
+    data: function() {
+        return{
+            userName: '',
+            email: '',
+            password: ''
         }
     },
-    layout: 'Home'
-
+    methods: {
+        signUp() {
+            this.$store.dispatch('signUp', { email: this.email, password: this.password })
+            .then((user) => {
+                this.userName = '',
+                this.email = '',
+                this.password = ''
+                this.$router.push('/users/loginUser')
+            })
+            .catch((err) => {
+                alert(err)
+            })
+        }
+    },
 }
 </script>
-<style scoped>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-</style>

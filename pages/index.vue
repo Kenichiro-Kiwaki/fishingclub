@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import {gmapApi} from 'vue2-google-maps'
+import { gmapApi } from 'vue2-google-maps'
 export default {
   layout: "Home",
   computed: {
@@ -189,7 +189,6 @@ export default {
     toggleInfoWindow(marker) {
       this.infoWindowPos = marker.position
       this.infoContent = this.getInfoWindowContent(marker)
-
       // if(this.currentMidx === index) {
       //   this.infoWindowOpen = !this.infoWindowOpen
       // } else {
@@ -242,4 +241,3 @@ export default {
   float: left;
 }
 </style>
-
