@@ -14,9 +14,7 @@ if (!firebase.apps.length) {
     measurementId: "G-TX85VEE11W"
   })
 }
-const firestoreDb = firebase.firestore()
-const dbSettings = { timestampsInSnapshots: true }
-firestoreDb.settings(dbSettings)
+const db = firebase.firestore()
 
 const auth = firebase.auth
 
@@ -28,5 +26,5 @@ const auth = firebase.auth
 //   })
 // }
 
-export  { auth, firestoreDb }
+export  { auth, db }
 export default firebase

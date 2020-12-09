@@ -10,15 +10,15 @@
                 </label>
                 <label class="form">                    
                     <span class="label">ユーザー名</span>
-                    <input type="text" v-model="userName">
+                    <input type="text" placeholder="ユーザー名" v-model="displayName">
                 </label>
                 <label class="form">
                     <span class="label">メールアドレス</span>
-                    <input type="email" v-model="email">
+                    <input type="email" placeholder="メールアドレス" v-model="email">
                 </label>
                 <label class="form">
                     <span class="label">パスワード</span>
-                    <input type="password" v-model="password"><br>
+                    <input type="password" placeholder="パスワード" v-model="password"><br>
                     <button @click="signUp">登録する</button>
                 </label>
             </form>
@@ -31,23 +31,17 @@ export default {
     layout: 'Home',
     data: function() {
         return{
-            userName: '',
+            displayName: '',
             email: '',
             password: ''
         }
     },
     methods: {
         signUp() {
-            this.$store.dispatch('signUp', { email: this.email, password: this.password })
-            .then((user) => {
-                this.userName = '',
-                this.email = '',
-                this.password = ''
-                this.$router.push('/users/loginUser')
-            })
-            .catch((err) => {
-                alert(err)
-            })
+            this.$store.dispatch('signUp', { email: this.email, password: this.password, displayName: this.displayName})
+            this.displayName = '',
+            this.email = '',
+            this.password = ''
         }
     },
 }

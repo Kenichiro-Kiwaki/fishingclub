@@ -18,12 +18,6 @@ export default {
     methods : {
         twitterLogin () {
             this.$store.dispatch('signInWithTwitter')
-            .then(() => {
-                this.$router.push('/users/loginUser')
-            })
-            .catch((err) => {
-                console.log('現在Twitterでのログインは使用できません。後ほどお試しください。')
-            })
         },
     }
 }
