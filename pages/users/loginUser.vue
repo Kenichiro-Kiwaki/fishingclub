@@ -7,6 +7,87 @@
       <img :src= "userPhoto" width="60px" height="60px">
       <p><nuxt-link to="/">Homeへ</nuxt-link></p>
       <button class="button is-light" @click="signOut">ログアウト</button>
+      <GmapMap
+        :center="center"
+        :zoom="13"
+        @zoom_changed="changeMarkerSize"
+        @rightclick="place($event)"
+        @click="setMarker($event)"
+        map-type-id="terrain"
+        style="width: 900px; height: 500px"
+        :options="{
+          streetViewControl: false,
+          styles: [
+            {
+              featureType: 'administrative.land_parcel',
+              stylers: [
+                {
+                  visibility: 'off'
+                }
+              ]
+            },
+            {
+              featureType: 'administrative.neighborhood',
+              stylers: [
+                {
+                  visibility: 'off'
+                }
+              ]
+            },
+            {
+              featureType: 'poi',
+              elementType: 'labels.text',
+              stylers: [
+                {
+                  visibility: 'off'
+                }
+              ]
+            },
+            {
+              featureType: 'road',
+              elementType: 'labels',
+              stylers: [
+                {
+                  visibility: 'off'
+                }
+              ]
+            },
+            {
+              featureType: 'water',
+              elementType: 'labels.text',
+              stylers: [
+                {
+                  visibility: 'off'
+                }
+              ]
+            }
+          ]
+        }"
+      >
+        <GmapMarker
+          :key="index"
+          v-for="(m, index) in markers"
+          :position="m.position"
+          :clickable="true"
+          :icon = "markerOptions"
+          @click="toggleInfoWindow(m)"
+        />
+        <GmapMarker
+          :key="m.lat"
+          v-for="m in currentPositionMarker"
+          :animation="2"
+          :position="m"
+          :clickable="true"
+          :draggable="true"
+        />
+        <GmapInfoWindow 
+          :position="infoWindowPos"
+          :opened="infoWindowOpen"
+          :options="infoWindowOptions"
+          @closeclick="closeInfoWindow"
+        ><div v-html="infoContent"></div>
+        </GmapInfoWindow>
+      </GmapMap>
     </main>
   </div>
 </template>

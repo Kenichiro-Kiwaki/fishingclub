@@ -15,16 +15,8 @@ if (!firebase.apps.length) {
   })
 }
 const db = firebase.firestore()
-
+//firebase.auth()にするとエラー出る
 const auth = firebase.auth
-
-// function auth() {
-//   return new Promise((resolve, reject) => {
-//     firebase.auth().onAuthStateChanged((user) => {
-//       resolve(user || false)
-//     })
-//   })
-// }
 
 export  { auth, db }
 export default firebase

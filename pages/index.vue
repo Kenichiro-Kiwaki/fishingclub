@@ -3,6 +3,8 @@
     <main id="main">
       <h2>MAIN BLOCK</h2>
       <p>トップページです</p>
+      <p>{{ storeMarkers }}</p>
+      <!-- <button @click="getMarkers">point!</button> -->
       <GmapMap
         :center="center"
         :zoom="13"
@@ -89,47 +91,12 @@
 </template>
 
 <script>
-import { gmapApi } from 'vue2-google-maps'
+// import { gmapApi } from 'vue2-google-maps'
 export default {
   layout: "Home",
-  computed: {
-    google: gmapApi
-  },
-  data() {
-    return {
-      markers: [
-        { 
-          name: "タマゾン川中流域1",
-          description: "詳細１",
-          data_build:"",
-          position: { lat: 35.587626238262736, lng: 139.6634936505371 }
-        },
-        { 
-          name: "タマゾン川中流域２",
-          description: "詳細２",
-          data_build: "",
-          position: { lat: 35.613953826411546, lng: 139.61255532158202 }
-        }
-      ],
-      currentPositionMarker: [],
-      center: {lat: 35.6811884, lng: 139.7671906},
-      markerOptions: {
-        url: require('@/assets/icon/fish_man.png'),
-        size: {width: 60, height: 60, f: 'px', b: 'px'},
-        scaledSize: {width: 40, height: 50, f: 'px', b: 'px'}
-      },
-      infoWindowPos: {lat: 0, lng:0},
-      infoWindowOpen: false,
-      // currentMidx: null,
-      infoWindowOptions: {
-        pixelOffset: {
-          width: 0,
-          height: -35
-        }
-      },
-      infoContent: '',
-    };
-  },
+  // computed: {
+  //   google: gmapApi
+  // },
   mounted() {
     //現在地の取得
     // if(process.client) {}    
@@ -158,13 +125,43 @@ export default {
         }
       })  
     }
-    // this.$refs.gmap.$mapPromise.then((map) => {
-    //   const bounds = new google.maps.LatLngBounds()
-    //   for(let m of this.markers) {
-    //     bounds.extend(m.position)
-    //   }
-    //   map.fitBounds(bounds);
-    // });
+    this.$store.commit('fishingPoint/setMarkers')
+  },
+  data() {
+    return {
+      markers: [
+        { 
+          name: "タマゾン川中流域1",
+          description: "詳細１",
+          data_build:"2020/12/10",
+          position: { lat: 35.587626238262736, lng: 139.6634936505371 }
+        },
+        { 
+          name: "タマゾン川中流域２",
+          description: "詳細２",
+          data_build: "2020/12/11",
+          position: { lat: 35.613953826411546, lng: 139.61255532158202 }
+        }
+      ],
+      currentPositionMarker: [],
+      center: {lat: 35.6811884, lng: 139.7671906},
+      markerOptions: {
+        url: require('@/assets/icon/fish_man.png'),
+        size: {width: 60, height: 60, f: 'px', b: 'px'},
+        scaledSize: {width: 40, height: 50, f: 'px', b: 'px'}
+      },
+      infoWindowPos: {lat: 0, lng:0},
+      infoWindowOpen: false,
+      // currentMidx: null,
+      infoWindowOptions: {
+        pixelOffset: {
+          width: 0,
+          height: -35
+        }
+      },
+      infoContent: '',
+      storeMarkers: this.$store.getters['fishingPoint/markers']
+    };
   },
   methods: {
     //右クリックで座標取得
