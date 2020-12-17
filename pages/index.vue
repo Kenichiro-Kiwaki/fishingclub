@@ -3,8 +3,12 @@
     <main id="main">
       <h2>MAIN BLOCK</h2>
       <p>トップページです</p>
-      <p>{{ storeMarkers }}</p>
-      <!-- <button @click="getMarkers">point!</button> -->
+      <p>currentPos:{{ currentPos }}</p>
+      <p>infoWindowOpen:{{ infoWindowOpen }}</p>
+      <p>コンテンツ{{ infoContent }}</p>
+      <p>infoWindowPos:{{ infoWindowPos }}</p>
+      <p>state{{ this.$store.state }}</p>
+      <p>地図の中心 {{center}}</p>
       <GmapMap
         :center="center"
         :zoom="13"
@@ -64,22 +68,24 @@
       >
         <GmapMarker
           :key="index"
-          v-for="(m, index) in markers"
-          :position="m.position"
+          v-for="(m, index) in fishingPoints"
+          :position="{lat:m.position.latitude, lng:m.position.longitude}"
           :clickable="true"
           :icon = "markerOptions"
           @click="toggleInfoWindow(m)"
         />
         <GmapMarker
-          :key="m.lat"
-          v-for="m in currentPositionMarker"
+          v-for="m in currentPos"
+          :key="m.latitude"
           :animation="2"
           :position="m"
           :clickable="true"
           :draggable="true"
         />
         <GmapInfoWindow 
-          :position="infoWindowPos"
+          v-for="m in infoWindowPos"
+          :key="m.latitude"
+          :position="m"
           :opened="infoWindowOpen"
           :options="infoWindowOptions"
           @closeclick="closeInfoWindow"
@@ -92,6 +98,7 @@
 
 <script>
 // import { gmapApi } from 'vue2-google-maps'
+import { mapGetters } from 'vuex'
 export default {
   layout: "Home",
   // computed: {
@@ -125,42 +132,32 @@ export default {
         }
       })  
     }
-    this.$store.commit('fishingPoint/setMarkers')
+    this.$store.dispatch('fishingPoint/setFishingPoints')
   },
+  computed: {
+    },
   data() {
     return {
-      markers: [
-        { 
-          name: "タマゾン川中流域1",
-          description: "詳細１",
-          data_build:"2020/12/10",
-          position: { lat: 35.587626238262736, lng: 139.6634936505371 }
-        },
-        { 
-          name: "タマゾン川中流域２",
-          description: "詳細２",
-          data_build: "2020/12/11",
-          position: { lat: 35.613953826411546, lng: 139.61255532158202 }
-        }
-      ],
-      currentPositionMarker: [],
+      // ...mapGetters('fishingPoint',{
+      //   fishingPoints:'fishingPoints', currentPos:'currentPos', infoWindowPos:'infoWindowPos', infoWindowOpen:'infoWindowOpen', infoContent:'infoContent'
+      // }),
+      fishingPoints: this.$store.getters['fishingPoint/fishingPoints'],
+      currentPos: this.$store.getters['fishingPoint/currentPos'],
+      infoWindowPos: this.$store.getters['fishingPoint/infoWindowPos'],
+      infoWindowOpen: this.$store.getters['fishingPoint/infoWindowOpen'],
+      infoContent: this.$store.getters['fishingPoint/infoContent'],
       center: {lat: 35.6811884, lng: 139.7671906},
       markerOptions: {
         url: require('@/assets/icon/fish_man.png'),
         size: {width: 60, height: 60, f: 'px', b: 'px'},
         scaledSize: {width: 40, height: 50, f: 'px', b: 'px'}
       },
-      infoWindowPos: {lat: 0, lng:0},
-      infoWindowOpen: false,
-      // currentMidx: null,
       infoWindowOptions: {
         pixelOffset: {
           width: 0,
           height: -35
         }
       },
-      infoContent: '',
-      storeMarkers: this.$store.getters['fishingPoint/markers']
     };
   },
   methods: {
@@ -176,46 +173,45 @@ export default {
     setMarker(event) {
       let currentLat = event.latLng.lat()
       let currentLng = event.latLng.lng()
-      this.currentPositionMarker = []
-      this.currentPositionMarker.push({lat: currentLat, lng: currentLng})
-    },
-    closeInfoWindow() {
-      this.infoWindowOpen = false
+      // this.currentPosition = {}
+      // this.currentPosition = {lat: currentLat, lng: currentLng}
+      this.$store.commit('fishingPoint/setCurrentPosMarker', {currentLat, currentLng})
     },
     //マーカークリックでinfoWindow表示
     toggleInfoWindow(marker) {
-      this.infoWindowPos = marker.position
-      this.infoContent = this.getInfoWindowContent(marker)
-      // if(this.currentMidx === index) {
-      //   this.infoWindowOpen = !this.infoWindowOpen
-      // } else {
-        this.infoWindowOpen = true
-        // this.currentMidx = index
-      // }
+      this.$store.commit('fishingPoint/setInfoWindow', marker)
+      this.$store.dispatch('fishingPoint/setInfoContent', marker)
+      // this.infoWindowPos = { lat:marker.position.latitude, lng:marker.position.longitude }
+      // this.infoContent = this.getInfoWindowContent(marker)
+      // this.infoWindowOpen = true
+    },
+    closeInfoWindow() {
+      // this.infoWindowOpen = false
+      this.$store.commit('fishingPoint/closeInfoWindow')
     },
     //infoWindowのコンテンツ取得
-    getInfoWindowContent(marker) {
-      return (
-      `<div class="card">
-        <div class="card-image">
-          <figure class="image is-4by3">
-            <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-          </figure>
-        </div>
-        <div class="card-content">
-          <div class="media">
-            <div class="media-content">
-              <p class="title is-4">${marker.name}</p>
-            </div>
-          </div>
-          <div class="content">
-            ${marker.description}
-            <br>
-            <time datetime="2020-11-30">${marker.data_build}</time>
-          </div>
-        </div>`
-      )
-    },
+    // getInfoWindowContent(marker) {
+    //   return (
+    //     `<div class="card">
+    //     <div class="card-image">
+    //       <figure class="image is-4by3">
+    //         <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+    //       </figure>
+    //     </div>
+    //     <div class="card-content">
+    //       <div class="media">
+    //         <div class="media-content">
+    //           <p class="title is-4">${marker.name}</p>
+    //         </div>
+    //       </div>
+    //       <div class="content">
+    //         ${marker.description}
+    //         <br>
+    //         <time datetime="2020-11-30">登録：${marker.data_build_String}</time>
+    //       </div>
+    //     </div>`
+    //   )
+    // },
     //マーカーサイズを動的に変更
     changeMarkerSize() {
       // console.log('change!')
